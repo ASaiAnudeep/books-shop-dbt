@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: rudderstack
+    description: RudderStack event stream from the books-shop web storefront.
+    schema: "{{ target.schema }}_raw"
+    tables:
+      - name: tracks
+        description: Unified track events table (seed simulates warehouse landing zone).
+        identifier: raw_track_events
+        columns:
+          - name: event_id
+            description: Unique event identifier.
+          - name: anonymous_id
+            description: Anonymous visitor identifier from RudderStack.
+          - name: user_id
+            description: Identified user ID after login or identify call.
+          - name: received_at
+            description: Timestamp when the event was received.
+          - name: event_name
+            description: Event name matching books-shop analytics contract.
+          - name: path
+            description: URL path where the event occurred.
+          - name: source
+            description: Event source channel (web).

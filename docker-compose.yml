@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: books-shop-dbt-postgres
+    environment:
+      POSTGRES_USER: dbt
+      POSTGRES_PASSWORD: dbt
+      POSTGRES_DB: books_shop
+    ports:
+      - "5432:5432"
+    volumes:
+      - books_shop_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dbt -d books_shop"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  books_shop_pgdata:

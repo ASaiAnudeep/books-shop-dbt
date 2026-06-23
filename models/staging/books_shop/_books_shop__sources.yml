@@ -1,0 +1,26 @@
+version: 2
+
+sources:
+  - name: books_shop
+    description: Raw catalog data from the Leaf & Lantern Books application.
+    schema: "{{ target.schema }}_raw"
+    tables:
+      - name: books
+        description: Current book catalog seed table.
+        identifier: books
+        columns:
+          - name: book_id
+            description: Primary key for books.
+          - name: title
+            description: Book title.
+          - name: author
+            description: Book author.
+          - name: genre
+            description: Book genre category.
+          - name: price
+            description: List price in USD.
+          - name: rating
+            description: Average customer rating.
+      - name: books_price_history
+        description: Historical price and rating changes for books.
+        identifier: books_price_history

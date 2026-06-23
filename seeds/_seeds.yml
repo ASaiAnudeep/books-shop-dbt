@@ -1,0 +1,69 @@
+version: 2
+
+seeds:
+  - name: books
+    description: Current book catalog from Leaf & Lantern Books storefront.
+    columns:
+      - name: book_id
+        description: Unique book identifier (e.g. b001).
+        tests:
+          - unique
+          - not_null
+      - name: genre
+        tests:
+          - accepted_values:
+              values: ['Fiction', 'History', 'Science', 'Design', 'Business', 'Poetry']
+      - name: price
+        tests:
+          - positive_value
+
+  - name: raw_track_events
+    description: Synthetic RudderStack-style track events for the books-shop funnel.
+    config:
+      column_types:
+        event_id: varchar
+        anonymous_id: varchar
+        user_id: varchar
+        received_at: varchar
+        event_name: varchar
+        path: varchar
+        source: varchar
+        page_name: varchar
+        product_id: varchar
+        title: varchar
+        genre: varchar
+        price: varchar
+        quantity: varchar
+        item_count: varchar
+        cart_value: varchar
+        email: varchar
+        order_id: varchar
+        total: varchar
+    columns:
+      - name: event_id
+        tests:
+          - unique
+          - not_null
+      - name: event_name
+        tests:
+          - accepted_values:
+              values:
+                - page_view
+                - product_viewed
+                - cart_item_added
+                - checkout_started
+                - order_completed
+      - name: source
+        tests:
+          - accepted_values:
+              values: ['web']
+
+  - name: books_price_history
+    description: Historical book prices and ratings for snapshot and SCD demonstrations.
+    columns:
+      - name: book_id
+        tests:
+          - not_null
+      - name: valid_from
+        tests:
+          - not_null

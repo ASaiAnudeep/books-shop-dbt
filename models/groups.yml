@@ -1,0 +1,13 @@
+groups:
+  - name: staging
+    owner:
+      name: analytics
+      email: analytics@leaf-lantern.example
+  - name: intermediate
+    owner:
+      name: analytics
+      email: analytics@leaf-lantern.example
+  - name: marts
+    owner:
+      name: analytics
+      email: analytics@leaf-lantern.example

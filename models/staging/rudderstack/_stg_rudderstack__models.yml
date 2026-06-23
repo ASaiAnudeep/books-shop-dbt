@@ -1,0 +1,80 @@
+version: 2
+
+models:
+  - name: stg_books_shop__books
+    description: Staged current book catalog with typed columns.
+    columns:
+      - name: book_id
+        tests:
+          - unique
+          - not_null
+      - name: price
+        tests:
+          - positive_value
+
+  - name: stg_books_shop__book_versions
+    description: Staged historical book versions for price tracking.
+    columns:
+      - name: book_id
+        tests:
+          - not_null
+
+  - name: stg_rudderstack__events
+    description: >
+      Staged RudderStack track events from the books-shop funnel.
+      Filters to web source and the five contracted event types.
+    columns:
+      - name: event_sk
+        tests:
+          - unique
+          - not_null
+      - name: event_id
+        tests:
+          - unique
+          - not_null
+      - name: event_name
+        tests:
+          - accepted_values:
+              values:
+                - page_view
+                - product_viewed
+                - cart_item_added
+                - checkout_started
+                - order_completed
+      - name: price
+        tests:
+          - positive_value
+      - name: cart_value
+        tests:
+          - positive_value
+      - name: total
+        tests:
+          - positive_value
+
+unit_tests:
+  - name: test_stg_events_filters_non_web_source
+    model: stg_rudderstack__events
+    overrides:
+      macros:
+        is_incremental: false
+    given:
+      - input: source('rudderstack', 'tracks')
+        rows:
+          - {event_id: evt-test-1, anonymous_id: anon-test, user_id: "", received_at: "2025-06-01 10:00:00", event_name: page_view, path: /, source: web, page_name: Storefront, product_id: "", title: "", genre: "", price: "", quantity: "", item_count: "", cart_value: "", email: "", order_id: "", total: ""}
+          - {event_id: evt-test-2, anonymous_id: anon-test, user_id: "", received_at: "2025-06-01 10:01:00", event_name: page_view, path: /, source: mobile, page_name: Storefront, product_id: "", title: "", genre: "", price: "", quantity: "", item_count: "", cart_value: "", email: "", order_id: "", total: ""}
+    expect:
+      rows:
+        - {event_id: evt-test-1, event_name: page_view, source: web, page_name: Storefront}
+
+  - name: test_stg_events_parses_product_viewed
+    model: stg_rudderstack__events
+    overrides:
+      macros:
+        is_incremental: false
+    given:
+      - input: source('rudderstack', 'tracks')
+        rows:
+          - {event_id: evt-test-3, anonymous_id: anon-test, user_id: "", received_at: "2025-06-01 10:02:00", event_name: product_viewed, path: /book/b001, source: web, page_name: "", product_id: b001, title: The Last Mapmaker, genre: Fiction, price: 22, quantity: "", item_count: "", cart_value: "", email: "", order_id: "", total: ""}
+    expect:
+      rows:
+        - {event_id: evt-test-3, event_name: product_viewed, product_id: b001, product_title: The Last Mapmaker, genre: Fiction, price: 22}

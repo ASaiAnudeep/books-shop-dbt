@@ -1,0 +1,25 @@
+book_id,title,author,genre,price,rating,synopsis,cover_token,valid_from
+b001,The Last Mapmaker,Nora Bellamy,Fiction,20,4.5,A cartographer rebuilds her life while tracing missing coastlines.,dawn,2025-01-01
+b002,Salt & Cedar,Ibrahim Kline,Poetry,15,4.2,A contemporary poetry collection shaped by shoreline towns.,coast,2025-01-01
+b003,Borrowed Latitude,Mina Ortiz,History,26,4.6,A vivid account of women who charted trade routes in secret.,atlas,2025-01-01
+b004,Quiet Signals,Theo Wren,Science,23,4.4,An approachable guide to how radio transformed modern science.,signal,2025-01-01
+b005,Rooms for Ideas,Alina Mercer,Design,29,4.3,A practical design book on creating spaces that support focus.,studio,2025-01-01
+b006,Ledger of Light,Haruto Ames,Business,27,4.1,Narrative lessons about ethical growth from founder memoirs.,ledger,2025-01-01
+b007,Midnight Conservatory,Elise Rowan,Fiction,22,4.8,A city violinist uncovers hidden letters in a closed conservatory.,midnight,2025-01-01
+b008,Field Notes on Time,Dr. Samir Holt,Science,24,4.0,A lucid primer on relativity written for curious general readers.,time,2025-01-01
+b009,The Fifth Courtyard,Ari Menon,History,25,3.9,A social history of marketplaces that shaped port cities.,courtyard,2025-01-01
+b010,Paper Lantern Economics,June Okafor,Business,21,3.8,How small shops scale sustainably without losing their identity.,lantern,2025-01-01
+b011,A Grammar of Color,Lucia Fan,Design,28,4.5,A color systems handbook for digital and editorial creators.,color,2025-01-01
+b012,Ink Between Seasons,R. A. Bennett,Poetry,17,4.4,Poems on migration memory and inherited family rituals.,ink,2025-01-01
+b001,The Last Mapmaker,Nora Bellamy,Fiction,22,4.7,A cartographer rebuilds her life while tracing missing coastlines.,dawn,2025-04-01
+b002,Salt & Cedar,Ibrahim Kline,Poetry,17,4.4,A contemporary poetry collection shaped by shoreline towns.,coast,2025-04-01
+b003,Borrowed Latitude,Mina Ortiz,History,28,4.8,A vivid account of women who charted trade routes in secret.,atlas,2025-04-01
+b004,Quiet Signals,Theo Wren,Science,25,4.6,An approachable guide to how radio transformed modern science.,signal,2025-04-01
+b005,Rooms for Ideas,Alina Mercer,Design,31,4.5,A practical design book on creating spaces that support focus.,studio,2025-04-01
+b006,Ledger of Light,Haruto Ames,Business,29,4.3,Narrative lessons about ethical growth from founder memoirs.,ledger,2025-04-01
+b007,Midnight Conservatory,Elise Rowan,Fiction,24,4.9,A city violinist uncovers hidden letters in a closed conservatory.,midnight,2025-04-01
+b008,Field Notes on Time,Dr. Samir Holt,Science,26,4.2,A lucid primer on relativity written for curious general readers.,time,2025-04-01
+b009,The Fifth Courtyard,Ari Menon,History,27,4.1,A social history of marketplaces that shaped port cities.,courtyard,2025-04-01
+b010,Paper Lantern Economics,June Okafor,Business,23,4.0,How small shops scale sustainably without losing their identity.,lantern,2025-04-01
+b011,A Grammar of Color,Lucia Fan,Design,30,4.7,A color systems handbook for digital and editorial creators.,color,2025-04-01
+b012,Ink Between Seasons,R. A. Bennett,Poetry,19,4.6,Poems on migration memory and inherited family rituals.,ink,2025-04-01

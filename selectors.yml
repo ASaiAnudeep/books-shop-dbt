@@ -1,0 +1,22 @@
+selectors:
+  - name: daily
+    description: Run mart models only (for scheduled daily refresh).
+    definition:
+      union:
+        - method: path
+          value: models/marts
+        - exclude:
+            - method: tag
+              value: marketing
+
+  - name: full
+    description: Run all models including staging, intermediate, and marts.
+    definition:
+      method: fqn
+      value: "*"
+
+  - name: funnel
+    description: Run funnel-tagged models and upstream dependencies.
+    definition:
+      method: tag
+      value: funnel

@@ -1,0 +1,178 @@
+version: 2
+
+models:
+  - name: dim_products
+    description: Product dimension for the Leaf & Lantern Books catalog.
+    columns:
+      - name: product_sk
+        description: Surrogate key for products.
+        tests:
+          - unique
+          - not_null
+      - name: book_id
+        description: Natural key from the storefront.
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              to: ref('stg_books_shop__books')
+              field: book_id
+      - name: genre
+        tests:
+          - accepted_values:
+              values: ['Fiction', 'History', 'Science', 'Design', 'Business', 'Poetry']
+      - name: price
+        tests:
+          - positive_value
+
+  - name: dim_customers
+    description: Customer dimension derived from checkout and order events.
+    columns:
+      - name: customer_sk
+        tests:
+          - unique
+          - not_null
+      - name: email
+        tests:
+          - unique
+          - not_null
+
+  - name: fct_orders
+    description: One row per completed order from order_completed events.
+    columns:
+      - name: order_sk
+        tests:
+          - unique
+          - not_null
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+      - name: customer_sk
+        tests:
+          - relationships:
+              to: ref('dim_customers')
+              field: customer_sk
+      - name: total
+        tests:
+          - positive_value
+
+  - name: fct_product_events
+    description: Product view and cart add events enriched with product dimension.
+    columns:
+      - name: event_sk
+        tests:
+          - unique
+          - not_null
+      - name: product_sk
+        tests:
+          - relationships:
+              to: ref('dim_products')
+              field: product_sk
+
+  - name: rpt_daily_funnel
+    description: Daily funnel metrics for the books-shop storefront.
+    columns:
+      - name: report_date
+        tests:
+          - unique
+          - not_null
+      - name: conversion_rate
+        description: Orders divided by sessions for the day.
+
+  - name: rpt_conversion_by_genre
+    description: Product view to order conversion rate by genre.
+
+semantic_models:
+  - name: orders
+    description: Semantic model for order facts.
+    model: ref('fct_orders')
+    defaults:
+      agg_time_dimension: order_date
+    entities:
+      - name: order
+        type: primary
+        expr: order_id
+      - name: customer
+        type: foreign
+        expr: customer_sk
+    dimensions:
+      - name: order_date
+        type: time
+        type_params:
+          time_granularity: day
+        expr: order_date
+      - name: email
+        type: categorical
+        expr: email
+    measures:
+      - name: order_revenue
+        agg: sum
+        expr: total
+      - name: orders
+        agg: count
+        expr: order_id
+
+  - name: funnel
+    description: Semantic model for daily funnel reporting.
+    model: ref('rpt_daily_funnel')
+    defaults:
+      agg_time_dimension: report_date
+    entities:
+      - name: report
+        type: primary
+        expr: report_date
+    dimensions:
+      - name: report_date
+        type: time
+        type_params:
+          time_granularity: day
+        expr: report_date
+    measures:
+      - name: session_count
+        agg: sum
+        expr: session_count
+      - name: order_sessions
+        agg: sum
+        expr: order_sessions
+
+metrics:
+  - name: total_revenue
+    label: Total Revenue
+    description: Sum of order totals from completed orders.
+    type: simple
+    type_params:
+      measure: order_revenue
+    filter: "{{ Dimension('order__order_date') }} is not null"
+
+  - name: order_count
+    label: Order Count
+    description: Count of completed orders.
+    type: simple
+    type_params:
+      measure: orders
+
+  - name: conversion_rate
+    label: Conversion Rate
+    description: Ratio of order sessions to total sessions by day.
+    type: simple
+    type_params:
+      measure: order_sessions
+    filter: "{{ Dimension('report__report_date') }} is not null"
+
+exposures:
+  - name: leaf_lantern_funnel_dashboard
+    label: Leaf & Lantern Funnel Dashboard
+    type: dashboard
+    maturity: low
+    url: https://bi.example.com/dashboards/leaf-lantern-funnel
+    description: >
+      Executive dashboard showing books-shop funnel conversion from page views
+      through completed orders. Powered by rpt_daily_funnel.
+    depends_on:
+      - ref('rpt_daily_funnel')
+      - ref('fct_orders')
+      - ref('dim_products')
+    owner:
+      name: analytics
+      email: analytics@leaf-lantern.example
