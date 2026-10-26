@@ -146,4 +146,3 @@ books-shop-dbt/
 ## Related project
 
 The upstream storefront lives in [`../books-shop`](../books-shop). Event contracts are defined in `books-shop/analytics/schemas/*.json`.
-
